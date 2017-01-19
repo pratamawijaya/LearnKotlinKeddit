@@ -13,24 +13,14 @@ import java.util.ArrayList
  * Date : Jan - 1/19/17
  * Project Name : Keddit
  */
-class NewsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class NewsAdapter(
+    val items: ArrayList<ViewType>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-  private var items: ArrayList<ViewType>
   private var delegatesAdapter = SparseArrayCompat<ViewTypeDelegateAdapter>()
-
-
-  private val loadingItem = object : ViewType {
-    override fun getViewType(): Int = AdapterContsant.LOADING
-  }
-
 
   init {
     delegatesAdapter.put(AdapterContsant.LOADING, LoadingDelegateAdapter())
     delegatesAdapter.put(AdapterContsant.NEWS, NewsDelegateAdapter())
-
-    items = ArrayList()
-
-    items.add(loadingItem)
   }
 
 
@@ -43,6 +33,6 @@ class NewsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   override fun onCreateViewHolder(parent: ViewGroup,
       viewType: Int): ViewHolder = delegatesAdapter.get(viewType).onCreateViewHolder(parent)
 
-  override fun getItemViewType(position: Int): Int = this.items.get(position).getViewType()
+  override fun getItemViewType(position: Int): Int = this.items[position].getViewType()
 
 }

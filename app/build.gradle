@@ -46,6 +46,7 @@ dependencies {
   compile "org.jetbrains.anko:anko-sdk15:$anko_version"
   compile 'com.android.support:design:25.1.0'
   compile 'com.squareup.picasso:picasso:2.5.2'
+  compile 'io.reactivex:rxjava:1.1.6'
 }
 repositories {
   mavenCentral()
