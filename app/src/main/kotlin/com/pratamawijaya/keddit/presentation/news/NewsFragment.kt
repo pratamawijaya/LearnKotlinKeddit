@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.pratamawijaya.keddit.R
+import com.pratamawijaya.keddit.data.entity.RedditNewsItem
 import com.pratamawijaya.keddit.presentation.news.adapter.AdapterContsant
 import com.pratamawijaya.keddit.presentation.news.adapter.NewsAdapter
 import com.pratamawijaya.keddit.presentation.news.adapter.ViewType
@@ -20,7 +21,8 @@ import java.util.ArrayList
  * Date : Jan - 1/19/17
  * Project Name : Keddit
  */
-class NewsFragment : Fragment() {
+class NewsFragment : Fragment(), NewsInterfaces {
+
 
   companion object {
     /**
@@ -36,6 +38,7 @@ class NewsFragment : Fragment() {
 
   private lateinit var adapter: NewsAdapter
   private lateinit var presenter: NewsPresenter
+  private var items: MutableList<ViewType> = ArrayList()
 
   override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
@@ -45,7 +48,7 @@ class NewsFragment : Fragment() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    presenter = NewsPresenter()
+    presenter = NewsPresenter(this)
   }
 
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -56,25 +59,31 @@ class NewsFragment : Fragment() {
     initAdapter()
 
     if (savedInstanceState == null) {
-      requestNews()
+      presenter.getNews()
     }
   }
 
-  private fun requestNews() {
-    val subscribtion = presenter.getNews().subscribe({ news ->
-    }, { error -> })
+  override fun onStop() {
+    super.onStop()
+    presenter.onStop()
   }
 
   private fun initAdapter() {
-    val items = ArrayList<ViewType>()
-    items.add(loadingItem)
+    // add loading item
+//    items.add(loadingItem)
 
     adapter = NewsAdapter(items)
-
     rvNews.adapter = adapter
   }
 
   private val loadingItem = object : ViewType {
     override fun getViewType(): Int = AdapterContsant.LOADING
   }
+
+  override fun setData(news: List<RedditNewsItem>?) {
+    if (news != null) {
+      items.addAll(news)
+    }
+  }
+
 }

@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.ViewGroup
 import com.pratamawijaya.keddit.presentation.news.adapter.delegates.LoadingDelegateAdapter
 import com.pratamawijaya.keddit.presentation.news.adapter.delegates.NewsDelegateAdapter
-import java.util.ArrayList
 
 /**
  * Created by mnemonix
@@ -14,10 +13,13 @@ import java.util.ArrayList
  * Project Name : Keddit
  */
 class NewsAdapter(
-    val items: ArrayList<ViewType>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    val items: List<ViewType>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   private var delegatesAdapter = SparseArrayCompat<ViewTypeDelegateAdapter>()
 
+  /**
+   * list of viewtype
+   */
   init {
     delegatesAdapter.put(AdapterContsant.LOADING, LoadingDelegateAdapter())
     delegatesAdapter.put(AdapterContsant.NEWS, NewsDelegateAdapter())
